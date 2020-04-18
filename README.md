@@ -11,7 +11,7 @@ Usage
 Use as addon for mitmproxy/mitmweb/mitmdump command:
 
 ```
-mitmweb -s mitmpcap.pcap
+mitmweb -s mitmpcap.py
 ```
 
 By default, it exports to filename `output.pcap`.
