@@ -111,13 +111,26 @@ class Addon:
         self.exporter = None
 
     def response(self, flow):
-        client_addr = list(flow.client_conn.ip_address[:2])
-        server_addr = list(flow.server_conn.ip_address[:2])
-        client_addr[0] = client_addr[0].replace('::ffff:', '')
-        server_addr[0] = server_addr[0].replace('::ffff:', '')
-        self.export_request(client_addr, server_addr, flow.request)
-        self.export_response(client_addr, server_addr, flow.response)
-        self.exporter.flush()
+        try:
+            if flow.client_conn.peername == None:
+                client_addr = list(flow.client_conn.address[:2])
+            else:
+                client_addr = list(flow.client_conn.peername[:2])
+            if flow.server_conn.peername == None:
+                server_addr = list(flow.client_conn.address[:2])
+            else:
+                server_addr = list(flow.server_conn.peername[:2])
+            client_addr[0] = client_addr[0].replace('::ffff:', '')
+            server_addr[0] = server_addr[0].replace('::ffff:', '')
+            self.export_request(client_addr, server_addr, flow.request)
+            self.export_response(client_addr, server_addr, flow.response)
+            self.exporter.flush()
+        except Exception as e:
+            ctx.log.info("client:")
+            ctx.log.info(flow.client_conn.get_state())
+            ctx.log.info("server:")
+            ctx.log.info(flow.server_conn.get_state())
+            ctx.log.error(e)
 
     def export_request(self, client_addr, server_addr, r):
         proto = '%s %s %s\r\n' % (r.method, r.path, r.http_version)
