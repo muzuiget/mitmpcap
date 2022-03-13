@@ -138,23 +138,23 @@ class Addon:
         payload.extend(proto.encode('ascii'))
         payload.extend(bytes(r.headers))
         payload.extend(b'\r\n')
-        payload.extend(r.raw_content)
+        payload.extend(r.raw_content or b'')
         self.exporter.packets(*client_addr, *server_addr, payload)
 
     def export_response(self, client_addr, server_addr, r):
         headers = r.headers.copy()
         if r.http_version.startswith('HTTP/2'):
-            headers.setdefault('content-length', str(len(r.raw_content)))
+            headers.setdefault('content-length', str(len(r.raw_content or b'')))
             proto = '%s %s\r\n' % (r.http_version, r.status_code)
         else:
-            headers.setdefault('Content-Length', str(len(r.raw_content)))
+            headers.setdefault('Content-Length', str(len(r.raw_content or b'')))
             proto = '%s %s %s\r\n' % (r.http_version, r.status_code, r.reason)
 
         payload = bytearray()
         payload.extend(proto.encode('ascii'))
         payload.extend(bytes(headers))
         payload.extend(b'\r\n')
-        payload.extend(r.raw_content)
+        payload.extend(r.raw_content or b'')
         self.exporter.packets(*server_addr, *client_addr, payload)
 
 addons = [Addon(lambda: File('output.pcap'))]
