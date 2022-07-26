@@ -15,6 +15,10 @@ mitmweb -s mitmpcap.py
 ```
 
 By default, it exports to filename `output.pcap`.
+You can also pass pcap file path with:
+```
+mitmweb -s mitmpcap.py  --set pcapfile=/tmp/output.pcap
+```
 
 Setting
 -------

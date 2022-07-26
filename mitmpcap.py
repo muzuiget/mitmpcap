@@ -4,6 +4,16 @@ from time import time
 from math import modf
 from struct import pack
 from subprocess import Popen, PIPE
+import sys
+
+args = sys.argv[1:]
+
+try:
+    indexOfSet = args.index('--set')
+    setparam = args[indexOfSet + 1]
+    pcapfile=setparam.replace("pcapfile=", "")
+except:
+    pcapfile="output.pcap"
 
 class Exporter:
 
@@ -144,5 +154,5 @@ class Addon:
         payload.extend(r.raw_content)
         self.exporter.packets(*server_addr, *client_addr, payload)
 
-addons = [Addon(lambda: File('output.pcap'))]
+addons = [Addon(lambda: File(pcapfile))]
 #addons = [Addon(lambda: Pipe('weer -'))]
