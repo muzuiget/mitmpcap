@@ -111,8 +111,8 @@ class Addon:
         self.exporter = None
 
     def response(self, flow):
-        client_addr = list(flow.client_conn.ip_address[:2])
-        server_addr = list(flow.server_conn.ip_address[:2])
+        client_addr = list(flow.client_conn.peername[:2])
+        server_addr = list(flow.server_conn.peername[:2])
         client_addr[0] = client_addr[0].replace('::ffff:', '')
         server_addr[0] = server_addr[0].replace('::ffff:', '')
         self.export_request(client_addr, server_addr, flow.request)
