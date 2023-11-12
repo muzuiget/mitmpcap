@@ -2,8 +2,6 @@
 
 **NOTE: This project has been abandoned, use the SSLKEYLOGFILE way instead. see [#10](https://github.com/muzuiget/mitmpcap/issues/10).**
 
----
-
 This is a [mitmproxy addon][] script, it exports traffic to PCAP file, so you can view the decoded HTTPS or HTTP/2 traffic in other programs.
 
 [mitmproxy addon]: https://docs.mitmproxy.org/stable/addons-overview/
